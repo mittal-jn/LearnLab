@@ -1,5 +1,7 @@
 """CLI entry point — `uv run learnlab` launches the Streamlit app."""
 
+from __future__ import annotations
+
 import subprocess
 import sys
 from pathlib import Path
@@ -18,3 +20,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

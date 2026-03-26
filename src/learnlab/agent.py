@@ -75,12 +75,13 @@ def fetch_concept(topic: str, lang: str, api_key: str) -> dict:
         ],
     )
     raw = resp.content[0].text.strip()
-    raw = re.sub(r"^```json\s*", "", raw)
-    raw = re.sub(r"\s*```$", "", raw)
+    raw = re.sub(r"^```json\\s*", "", raw)
+    raw = re.sub(r"\\s*```$", "", raw)
     return json.loads(raw)
 
 
 # ── Code runner ───────────────────────────────────────────────────────────────
+
 
 def simulate_run(code: str, lang: str, api_key: str) -> tuple[str, str]:
     """
@@ -95,7 +96,7 @@ def simulate_run(code: str, lang: str, api_key: str) -> tuple[str, str]:
             f"You are a {lang} interpreter. Return ONLY what stdout/stderr would show. "
             "Prefix output lines with '> ', errors with 'ERROR: '. No explanation, no markdown."
         ),
-        messages=[{"role": "user", "content": f"Run this {lang} code:\n\n{code}"}],
+        messages=[{"role": "user", "content": f"Run this {lang} code:\\n\\n{code}"}],
     )
     output = resp.content[0].text.strip()
     status = "error" if "ERROR:" in output else "success"
@@ -103,6 +104,7 @@ def simulate_run(code: str, lang: str, api_key: str) -> tuple[str, str]:
 
 
 # ── AI tutor agent ────────────────────────────────────────────────────────────
+
 
 def tutor_reply(
     question: str,
@@ -117,9 +119,9 @@ def tutor_reply(
     """
     client = _client(api_key)
     system = (
-        f'You are LearnLab\'s AI tutor. The student is studying "{topic}" in {lang}.\n\n'
+        f"You are LearnLab's AI tutor. The student is studying \"{topic}\" in {lang}.\n\n"
         "Your role:\n"
-        f"- Answer follow-up questions clearly (2-5 sentences)\n"
+        "- Answer follow-up questions clearly (2-5 sentences)\n"
         f"- If asked for code, provide a short {lang} snippet (≤15 lines) in a fenced code block\n"
         "- Be pedagogical and encouraging\n"
         "- Reference the current topic when relevant\n"
@@ -140,3 +142,4 @@ def tutor_reply(
         messages=messages,
     )
     return resp.content[0].text.strip()
+

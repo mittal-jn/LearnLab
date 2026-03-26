@@ -6,7 +6,6 @@ rendering helpers in learnlab.components, styles in learnlab.styles.
 
 Run locally:
     uv run streamlit run src/learnlab/app.py
-
 Or via the CLI script:
     uv run learnlab
 """
@@ -15,7 +14,17 @@ from __future__ import annotations
 
 import streamlit as st
 
-from learnlab import agent, components as comp, styles
+# When executing `src/learnlab/app.py` directly, `src/` might not be on
+# `sys.path` yet. This keeps imports reliable in both installed and dev modes.
+try:
+    from learnlab import agent, components as comp, styles
+except ModuleNotFoundError:  # pragma: no cover
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from learnlab import agent, components as comp, styles
+
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -52,13 +61,21 @@ for k, v in DEFAULTS.items():
 # ── Constants ─────────────────────────────────────────────────────────────────
 LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "Go", "Rust"]
 QUICK_TOPICS = [
-    "Binary Search", "Recursion", "Hash Maps", "Async/Await",
-    "Big O Notation", "Linked Lists", "REST APIs", "Closures",
-    "Graphs", "Sorting Algorithms",
+    "Binary Search",
+    "Recursion",
+    "Hash Maps",
+    "Async/Await",
+    "Big O Notation",
+    "Linked Lists",
+    "REST APIs",
+    "Closures",
+    "Graphs",
+    "Sorting Algorithms",
 ]
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 def load_topic(topic: str, lang: str) -> None:
     """Fetch concept data and update session state."""
@@ -121,7 +138,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ── Search bar ────────────────────────────────────────────────────────────────
+# ── Search bar ───────────────────────────────────────────────────────────────
 inp_col, lang_col, btn_col = st.columns([5, 1.2, 1])
 
 with inp_col:
@@ -217,7 +234,6 @@ with left:
         st.markdown('<div class="card card-purple">', unsafe_allow_html=True)
         render_quiz(data.get("quiz", {}))
         st.markdown("</div>", unsafe_allow_html=True)
-
 
 # ════════════════════════════════════════════════════════════════════════
 # RIGHT — Code Editor + AI Agent
@@ -387,3 +403,4 @@ with right:
             if st.button("🗑 Clear chat", key="clear_chat"):
                 st.session_state.chat_history = []
                 st.rerun()
+

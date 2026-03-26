@@ -5,6 +5,8 @@ All custom CSS injected into Streamlit via st.markdown().
 Centralised here so app.py stays clean.
 """
 
+from __future__ import annotations
+
 STYLES = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap');
@@ -85,3 +87,4 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 def inject(st_instance) -> None:  # type: ignore[no-untyped-def]
     """Inject all custom styles into the Streamlit page."""
     st_instance.markdown(STYLES, unsafe_allow_html=True)
+

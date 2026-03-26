@@ -10,6 +10,7 @@ from __future__ import annotations
 
 # ── Diagram ───────────────────────────────────────────────────────────────────
 
+
 def diagram_svg(diagram: dict, width: int = 580, height: int = 165) -> str:
     """Build an SVG diagram from diagram spec dict."""
     nodes = diagram.get("nodes", [])
@@ -85,6 +86,7 @@ def diagram_svg(diagram: dict, width: int = 580, height: int = 165) -> str:
 
 # ── Cards ─────────────────────────────────────────────────────────────────────
 
+
 def hero_card(title: str, tagline: str, description: str) -> str:
     return f"""
 <div class="card card-accent">
@@ -152,12 +154,11 @@ def console_output(text: str, otype: str) -> str:
 
 
 def section_label(icon: str, text: str) -> str:
-    return (
-        f'<div class="section-label">{icon} {_esc(text)}</div>'
-    )
+    return f'<div class="section-label">{icon} {_esc(text)}</div>'
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 def _esc(s: str) -> str:
     return (
@@ -167,3 +168,4 @@ def _esc(s: str) -> str:
         .replace(">", "&gt;")
         .replace('"', "&quot;")
     )
+
