@@ -1,0 +1,19 @@
+# Streamlit — only secrets.toml is sensitive, but ignore whole folder
+# (config.toml can be committed if desired — move it out of this block)
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[oc]
+*.egg-info/
+
+# uv venv
+.venv/
+
+# Distribution
+build/
+dist/
+wheels/
+
+# macOS
+.DS_Store
