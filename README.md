@@ -1,123 +1,61 @@
 # ⚡ LearnLab
 
-Interactive AI Learning Platform — search any CS/programming concept and get a live visual dashboard, code runner, and AI tutor agent, all powered by Groq.
+Interactive AI Learning Platform — search any CS concept and get a live visual dashboard, code runner, and AI tutor, powered by **Groq** (free & fast).
 
 ## Project Structure
 
-```text
+```
 learnlab/
-├── src/
-│   └── learnlab/
-│       ├── __init__.py      # Package metadata
-│       ├── app.py           # Streamlit UI entry point
-│       ├── agent.py         # All Groq AI calls (concept, runner, tutor)
-│       ├── components.py    # HTML/SVG renderers (no Streamlit dependency)
-│       ├── styles.py        # Custom CSS injected into Streamlit
-│       └── cli.py           # `uv run learnlab` entry point
+├── src/learnlab/
+│   ├── __init__.py     # package
+│   ├── app.py          # Streamlit UI
+│   ├── agent.py        # all Groq AI calls
+│   ├── components.py   # HTML/SVG renderers (no Streamlit dep)
+│   ├── styles.py       # custom CSS
+│   └── cli.py          # uv run learnlab
 ├── .streamlit/
-│   ├── config.toml          # Dark theme + server settings
-│   └── secrets.toml.example # API key template
-├── pyproject.toml           # uv project config + dependencies
-├── uv.lock                  # Locked dependency graph
-└── README.md
+│   ├── config.toml
+│   └── secrets.toml.example
+├── pyproject.toml      # uv project + deps
+├── requirements.txt    # for Streamlit Cloud
+└── uv.lock
 ```
 
-## Prerequisites
-
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/):
+## Local Setup
 
 ```bash
+# Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
-```
 
-## Local Development
-
-```bash
-# 1. Clone
-git clone https://github.com/your-username/learnlab.git
+# Clone & install
+git clone https://github.com/YOUR_USERNAME/learnlab.git
 cd learnlab
-
-# 2. Install deps (uv creates .venv automatically)
 uv sync
 
-# 3. Add your Groq API key
+# Add your free Groq key (console.groq.com)
 cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-# Edit `.streamlit/secrets.toml` and set:
-# GROQ_API_KEY = "gsk_..."
+# Edit secrets.toml: GROQ_API_KEY = "gsk_..."
 
-# 4. Run via CLI script
+# Run
 uv run learnlab
-
-# — OR — run Streamlit directly
-uv run streamlit run src/learnlab/app.py
 ```
 
-App opens at **<http://localhost:8501>**
+## Deploy on Streamlit Cloud (Free)
 
-## Dependency Management
-
-```bash
-uv add <package>        # add a dependency
-uv remove <package>     # remove a dependency
-uv sync --upgrade       # update all packages
-uv tree                 # show dependency tree
-```
-
-## Deploy Publicly — Streamlit Community Cloud (Free)
-
-### Step 1 — Push to GitHub
-
-```bash
-git add .
-git commit -m "Initial LearnLab commit"
-git remote add origin https://github.com/YOUR_USERNAME/learnlab.git
-git push -u origin main
-```
-
-> Tip: commit uv.lock for reproducible deploys.
-
-### Step 2 — Get a Groq API Key
-
-1. Visit <https://console.groq.com>
-2. Create an API key
-3. Copy the key (starts with `gsk_`)
-
-### Step 3 — Deploy on Streamlit Cloud
-
-1. Go to <https://share.streamlit.io> and sign in with GitHub
-2. Click New app
-3. Set:
-   - Repository: your-username/learnlab
-   - Branch: main
-   - Main file path: src/learnlab/app.py
-4. Click Advanced settings → Secrets and paste:
+1. Push repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io) → New app
+3. Set main file: `src/learnlab/app.py`
+4. Advanced settings → Secrets:
+   ```toml
    GROQ_API_KEY = "gsk_your-key-here"
-5. Click Deploy!
+   ```
+5. Deploy → get public URL
 
-Your public URL will be:
-  <https://your-username-learnlab-app-XXXXX.streamlit.app>
+## Add a dependency
 
-Streamlit Cloud reads pyproject.toml and installs deps automatically.
-No requirements.txt needed.
-
-## Features
-
-- Dynamic topic search — live dashboard on any CS concept
-- 10 quick-topic chips (Binary Search, Recursion, Hash Maps…)
-- Auto-generated SVG diagrams scoped to each concept
-- Key points grid: complexity, best use, trade-offs
-- Real-world analogy card
-- Interactive quiz with AI explanation
-- Code editor with 6-language support
-- AI-simulated code runner with colour-coded console
-- AI tutor agent with full conversation memory
-- 4 smart suggested questions per topic
-
-## Architecture
-
-  app.py → agent.py      (Groq API — concept, runner, tutor)
-         → components.py (HTML/SVG builders, pure functions)
-         → styles.py     (CSS injection)
-
-agent.py has zero Streamlit imports — independently testable.
-components.py returns plain strings — no framework coupling.
+```bash
+uv add <package>
+echo "<package>" >> requirements.txt   # keep Streamlit Cloud in sync
+git add pyproject.toml uv.lock requirements.txt
+git commit -m "chore: add <package>"
+```
