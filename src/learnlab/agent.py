@@ -1,19 +1,17 @@
 """
 learnlab.agent
 ──────────────
-All AI interactions. Supports Groq (free, fast) and Anthropic (Claude).
-Set PROVIDER = "groq" or "anthropic" in secrets.toml.
+All AI interactions.
+Currently supports Groq only.
 
 secrets.toml example:
-    PROVIDER      = "groq"          # or "anthropic"
+    PROVIDER      = "groq"
     GROQ_API_KEY  = "gsk_..."       # from console.groq.com (free)
-    ANTHROPIC_API_KEY = "sk-ant-..." # from console.anthropic.com
 """
 
 from __future__ import annotations
 
 import json
-import os
 import re
 
 # ── Provider setup ────────────────────────────────────────────────────────────
@@ -23,37 +21,30 @@ def _get_provider(secrets: dict) -> str:
 
 
 def _groq_client(api_key: str):
-    from groq import Groq
+    try:
+        from groq import Groq
+    except ModuleNotFoundError as exc:  # pragma: no cover
+        raise ModuleNotFoundError(
+            "Provider is set to 'groq', but the 'groq' package is not installed. "
+            "Install it (`uv add groq`)."
+        ) from exc
     return Groq(api_key=api_key)
 
 
-def _anthropic_client(api_key: str):
-    import anthropic
-    return anthropic.Anthropic(api_key=api_key)
-
-
 def _chat(messages: list[dict], system: str, secrets: dict, max_tokens: int = 1800) -> str:
-    """Unified chat call — routes to Groq or Anthropic based on PROVIDER secret."""
+    """Chat call (Groq-only)."""
     provider = _get_provider(secrets)
 
     if provider == "groq":
         client = _groq_client(secrets["GROQ_API_KEY"])
         resp = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",   # free, fast, smart
+            model="llama-3.3-70b-versatile",  # free, fast, smart
             max_tokens=max_tokens,
             messages=[{"role": "system", "content": system}] + messages,
         )
         return resp.choices[0].message.content.strip()
 
-    else:  # anthropic
-        client = _anthropic_client(secrets["ANTHROPIC_API_KEY"])
-        resp = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=max_tokens,
-            system=system,
-            messages=messages,
-        )
-        return resp.content[0].text.strip()
+    raise ValueError(f"Unsupported PROVIDER={provider!r}. Only 'groq' is supported.")
 
 
 # ── Concept dashboard ─────────────────────────────────────────────────────────

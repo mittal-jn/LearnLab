@@ -27,7 +27,7 @@ styles.inject(st)
 try:
     SECRETS: dict = dict(st.secrets)
 except Exception:
-    st.error("⚠️ Add GROQ_API_KEY or ANTHROPIC_API_KEY to .streamlit/secrets.toml")
+    st.error("⚠️ Add `GROQ_API_KEY` to `.streamlit/secrets.toml`")
     st.stop()
 
 # ── Session state ─────────────────────────────────────────────────────────────
@@ -113,7 +113,7 @@ def render_quiz(quiz: dict) -> None:
 st.markdown(
     '<div class="logo-bar">'
     '<div><div class="logo-text">⚡ LearnLab</div>'
-    '<div class="tagline">// interactive concept explorer · powered by Claude AI</div>'
+    '<div class="tagline">// interactive concept explorer · powered by Groq AI</div>'
     '</div></div>',
     unsafe_allow_html=True,
 )

@@ -1,16 +1,16 @@
 # ⚡ LearnLab
 
-Interactive AI Learning Platform — search any CS/programming concept and get a live visual dashboard, code runner, and AI tutor agent, all powered by Claude.
+Interactive AI Learning Platform — search any CS/programming concept and get a live visual dashboard, code runner, and AI tutor agent, all powered by Groq.
 
 ## Project Structure
 
-```
+```text
 learnlab/
 ├── src/
 │   └── learnlab/
 │       ├── __init__.py      # Package metadata
 │       ├── app.py           # Streamlit UI entry point
-│       ├── agent.py         # All Claude AI calls (concept, runner, tutor)
+│       ├── agent.py         # All Groq AI calls (concept, runner, tutor)
 │       ├── components.py    # HTML/SVG renderers (no Streamlit dependency)
 │       ├── styles.py        # Custom CSS injected into Streamlit
 │       └── cli.py           # `uv run learnlab` entry point
@@ -40,10 +40,10 @@ cd learnlab
 # 2. Install deps (uv creates .venv automatically)
 uv sync
 
-# 3. Add your Anthropic API key
+# 3. Add your Groq API key
 cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-# Edit .streamlit/secrets.toml and set:
-# ANTHROPIC_API_KEY = "sk-ant-..."
+# Edit `.streamlit/secrets.toml` and set:
+# GROQ_API_KEY = "gsk_..."
 
 # 4. Run via CLI script
 uv run learnlab
@@ -52,7 +52,7 @@ uv run learnlab
 uv run streamlit run src/learnlab/app.py
 ```
 
-App opens at **http://localhost:8501**
+App opens at **<http://localhost:8501>**
 
 ## Dependency Management
 
@@ -76,26 +76,26 @@ git push -u origin main
 
 > Tip: commit uv.lock for reproducible deploys.
 
-### Step 2 — Get an Anthropic API Key
+### Step 2 — Get a Groq API Key
 
-1. Visit https://console.anthropic.com
-2. Go to API Keys → Create Key
-3. Copy the key (starts with sk-ant-)
+1. Visit <https://console.groq.com>
+2. Create an API key
+3. Copy the key (starts with `gsk_`)
 
 ### Step 3 — Deploy on Streamlit Cloud
 
-1. Go to https://share.streamlit.io and sign in with GitHub
+1. Go to <https://share.streamlit.io> and sign in with GitHub
 2. Click New app
 3. Set:
    - Repository: your-username/learnlab
    - Branch: main
    - Main file path: src/learnlab/app.py
 4. Click Advanced settings → Secrets and paste:
-   ANTHROPIC_API_KEY = "sk-ant-your-key-here"
+   GROQ_API_KEY = "gsk_your-key-here"
 5. Click Deploy!
 
 Your public URL will be:
-  https://your-username-learnlab-app-XXXXX.streamlit.app
+  <https://your-username-learnlab-app-XXXXX.streamlit.app>
 
 Streamlit Cloud reads pyproject.toml and installs deps automatically.
 No requirements.txt needed.
@@ -115,7 +115,7 @@ No requirements.txt needed.
 
 ## Architecture
 
-  app.py → agent.py      (Claude API — concept, runner, tutor)
+  app.py → agent.py      (Groq API — concept, runner, tutor)
          → components.py (HTML/SVG builders, pure functions)
          → styles.py     (CSS injection)
 
