@@ -1,20 +1,59 @@
 """
 learnlab.agent
 ──────────────
-All Claude AI interactions: concept fetching, code simulation, and tutor chat.
-Each function is a pure call → response with no Streamlit dependency.
+All AI interactions. Supports Groq (free, fast) and Anthropic (Claude).
+Set PROVIDER = "groq" or "anthropic" in secrets.toml.
+
+secrets.toml example:
+    PROVIDER      = "groq"          # or "anthropic"
+    GROQ_API_KEY  = "gsk_..."       # from console.groq.com (free)
+    ANTHROPIC_API_KEY = "sk-ant-..." # from console.anthropic.com
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
 
-import anthropic
+# ── Provider setup ────────────────────────────────────────────────────────────
+
+def _get_provider(secrets: dict) -> str:
+    return secrets.get("PROVIDER", "groq").lower()
 
 
-def _client(api_key: str) -> anthropic.Anthropic:
+def _groq_client(api_key: str):
+    from groq import Groq
+    return Groq(api_key=api_key)
+
+
+def _anthropic_client(api_key: str):
+    import anthropic
     return anthropic.Anthropic(api_key=api_key)
+
+
+def _chat(messages: list[dict], system: str, secrets: dict, max_tokens: int = 1800) -> str:
+    """Unified chat call — routes to Groq or Anthropic based on PROVIDER secret."""
+    provider = _get_provider(secrets)
+
+    if provider == "groq":
+        client = _groq_client(secrets["GROQ_API_KEY"])
+        resp = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",   # free, fast, smart
+            max_tokens=max_tokens,
+            messages=[{"role": "system", "content": system}] + messages,
+        )
+        return resp.choices[0].message.content.strip()
+
+    else:  # anthropic
+        client = _anthropic_client(secrets["ANTHROPIC_API_KEY"])
+        resp = client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=max_tokens,
+            system=system,
+            messages=messages,
+        )
+        return resp.content[0].text.strip()
 
 
 # ── Concept dashboard ─────────────────────────────────────────────────────────
@@ -55,91 +94,58 @@ CONCEPT_SYSTEM = """You are an expert CS educator. Return ONLY valid JSON (no ma
     "correctIndex": 1,
     "explanation": "Because..."
   },
-  "codeExample": "# Commented example in the requested language\\n# Max 40 lines\\n"
+  "codeExample": "# Commented example in the requested language\n# Max 40 lines\n"
 }
 Rules: exactly 4 keyPoints, exactly 4 quiz options, codeExample must be valid runnable code."""
 
 
-def fetch_concept(topic: str, lang: str, api_key: str) -> dict:
-    """Fetch a full concept dashboard JSON from Claude."""
-    client = _client(api_key)
-    resp = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1800,
+def fetch_concept(topic: str, lang: str, secrets: dict) -> dict:
+    """Fetch a full concept dashboard JSON."""
+    raw = _chat(
+        messages=[{"role": "user", "content": f'Topic: "{topic}" — Language: {lang}. Write codeExample in {lang}.'}],
         system=CONCEPT_SYSTEM,
-        messages=[
-            {
-                "role": "user",
-                "content": f'Topic: "{topic}" — Language: {lang}. Write the codeExample in {lang}.',
-            }
-        ],
+        secrets=secrets,
+        max_tokens=1800,
     )
-    raw = resp.content[0].text.strip()
-    raw = re.sub(r"^```json\\s*", "", raw)
-    raw = re.sub(r"\\s*```$", "", raw)
+    raw = re.sub(r"^```json\s*", "", raw)
+    raw = re.sub(r"\s*```$", "", raw)
+    # Groq sometimes wraps in ```
+    raw = re.sub(r"^```\s*", "", raw)
     return json.loads(raw)
 
 
 # ── Code runner ───────────────────────────────────────────────────────────────
 
-
-def simulate_run(code: str, lang: str, api_key: str) -> tuple[str, str]:
-    """
-    Simulate executing code via Claude.
-    Returns (output_text, status) where status is 'success' | 'error'.
-    """
-    client = _client(api_key)
-    resp = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=500,
+def simulate_run(code: str, lang: str, secrets: dict) -> tuple[str, str]:
+    """Simulate executing code. Returns (output, 'success'|'error')."""
+    out = _chat(
+        messages=[{"role": "user", "content": f"Run this {lang} code:\n\n{code}"}],
         system=(
             f"You are a {lang} interpreter. Return ONLY what stdout/stderr would show. "
             "Prefix output lines with '> ', errors with 'ERROR: '. No explanation, no markdown."
         ),
-        messages=[{"role": "user", "content": f"Run this {lang} code:\\n\\n{code}"}],
+        secrets=secrets,
+        max_tokens=500,
     )
-    output = resp.content[0].text.strip()
-    status = "error" if "ERROR:" in output else "success"
-    return output, status
+    return out, "error" if "ERROR:" in out else "success"
 
 
 # ── AI tutor agent ────────────────────────────────────────────────────────────
-
 
 def tutor_reply(
     question: str,
     topic: str,
     lang: str,
     history: list[dict],
-    api_key: str,
+    secrets: dict,
 ) -> str:
-    """
-    Context-aware AI tutor. Maintains conversation history across turns.
-    history = [{"role": "user"|"assistant", "content": str}, ...]
-    """
-    client = _client(api_key)
+    """Context-aware AI tutor with conversation memory."""
     system = (
-        f"You are LearnLab's AI tutor. The student is studying \"{topic}\" in {lang}.\n\n"
-        "Your role:\n"
-        "- Answer follow-up questions clearly (2-5 sentences)\n"
-        f"- If asked for code, provide a short {lang} snippet (≤15 lines) in a fenced code block\n"
-        "- Be pedagogical and encouraging\n"
-        "- Reference the current topic when relevant\n"
-        "- Build on previous answers — you have full conversation memory"
+        f'You are LearnLab\'s AI tutor. The student is studying "{topic}" in {lang}.\n'
+        f"Answer in 2-5 sentences. For code requests, use a fenced {lang} code block (≤15 lines).\n"
+        "Be encouraging and build on previous answers."
     )
-
-    # Keep last 8 messages for context window efficiency
-    messages = [
-        {"role": m["role"], "content": m["content"]}
-        for m in history[-8:]
-    ]
+    messages = [{"role": m["role"], "content": m["content"]} for m in history[-8:]]
     messages.append({"role": "user", "content": question})
 
-    resp = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=700,
-        system=system,
-        messages=messages,
-    )
-    return resp.content[0].text.strip()
-
+    return _chat(messages=messages, system=system, secrets=secrets, max_tokens=700)
