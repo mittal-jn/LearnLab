@@ -185,7 +185,7 @@ with right:
         code_val = st.text_area(
             "code", value=st.session_state.code, height=290,
             placeholder=f"# Write {lang} code here, or click ⚡ Get Example",
-            label_visibility="collapsed", key="code_editor",
+            label_visibility="collapsed", 
         )
         st.session_state.code = code_val
 
