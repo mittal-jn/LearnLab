@@ -11,7 +11,7 @@ def main() -> None:
     app_path = Path(__file__).parent / "app.py"
     sys.exit(
         subprocess.call(
-            ["streamlit", "run", str(app_path), "--server.headless", "true"],
+            ["streamlit", "run", str(app_path), "--server.headless", "false"],
             stdout=sys.stdout,
             stderr=sys.stderr,
         )
