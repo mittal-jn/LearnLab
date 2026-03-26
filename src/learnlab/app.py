@@ -25,9 +25,9 @@ styles.inject(st)
 
 # ── API key ───────────────────────────────────────────────────────────────────
 try:
-    API_KEY: str = st.secrets["ANTHROPIC_API_KEY"]
+    SECRETS: dict = dict(st.secrets)
 except Exception:
-    st.error("⚠️ Add `ANTHROPIC_API_KEY` to `.streamlit/secrets.toml`")
+    st.error("⚠️ Add GROQ_API_KEY or ANTHROPIC_API_KEY to .streamlit/secrets.toml")
     st.stop()
 
 # ── Session state ─────────────────────────────────────────────────────────────
@@ -58,7 +58,7 @@ if st.session_state.pending_topic:
     st.session_state.pending_topic = None
     with st.spinner(f"⚡ Building dashboard for '{topic}'…"):
         try:
-            data = agent.fetch_concept(topic, lang_req, API_KEY)
+            data = agent.fetch_concept(topic, lang_req, SECRETS)
             st.session_state.update(
                 topic=topic,
                 lang=lang_req,
@@ -264,7 +264,7 @@ with right:
         if run_clicked and code_val.strip():
             with st.spinner("Running…"):
                 try:
-                    out, otype = agent.simulate_run(code_val, lang, API_KEY)
+                    out, otype = agent.simulate_run(code_val, lang, SECRETS)
                     st.session_state.output      = out
                     st.session_state.output_type = otype
                 except Exception as exc:
@@ -329,7 +329,7 @@ with right:
             with st.spinner("Thinking…"):
                 try:
                     answer = agent.tutor_reply(
-                        user_q.strip(), topic_ctx, lang, history[:-1], API_KEY
+                        user_q.strip(), topic_ctx, lang, history[:-1], SECRETS
                     )
                     history.append({"role": "assistant", "content": answer})
                 except Exception as exc:
@@ -358,7 +358,7 @@ with right:
                         history = [{"role": "user", "content": s}]
                         with st.spinner("Thinking…"):
                             try:
-                                ans = agent.tutor_reply(s, t, lang, [], API_KEY)
+                                ans = agent.tutor_reply(s, t, lang, [], SECRETS)
                                 history.append({"role": "assistant", "content": ans})
                             except Exception as exc:
                                 history.append({"role": "assistant", "content": f"Error: {exc}"})
