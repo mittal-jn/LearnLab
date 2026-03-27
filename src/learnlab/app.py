@@ -45,7 +45,9 @@ LANGUAGES = ["Python", "JavaScript", "TypeScript", "Java", "Go", "Rust"]
 QUICK_TOPICS = [
     "Binary Search", "Recursion", "Hash Maps", "Async/Await",
     "Big O Notation", "Linked Lists", "REST APIs", "Closures",
-    "Graphs", "Sorting Algorithms",
+    "React", "Node.js",
+    "SQL", "NoSQL",
+    "Git", "GitHub",
 ]
 
 # Fetch pending topic
