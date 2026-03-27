@@ -61,14 +61,15 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   font-family: 'Syne', sans-serif;
   font-size: 1.45rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 65%);
+  color: #e8f4ff;
+  background: linear-gradient(135deg, #ffffff 0%, #93c5fd 65%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.025em;
 }
 .tagline {
   font-size: 0.7rem;
-  color: #384870;
+  color: #5878a8;
   font-family: 'Space Mono', monospace;
   letter-spacing: 0.07em;
   margin-left: auto;
@@ -103,7 +104,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: #384870;
+  color: #5878a8;
   margin-bottom: 0.7rem;
 }
 
@@ -111,7 +112,8 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   font-family: 'Syne', sans-serif;
   font-size: 1.7rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 100%);
+  color: #e8f4ff;
+  background: linear-gradient(135deg, #ffffff 0%, #93c5fd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.15;
@@ -127,7 +129,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 }
 .concept-desc {
   font-size: 0.88rem;
-  color: #8098b8;
+  color: #a0b8d8;
   line-height: 1.8;
 }
 
@@ -142,7 +144,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .point-label {
   font-size: 0.62rem;
   font-family: 'Space Mono', monospace;
-  color: #384870;
+  color: #5878a8;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 5px;
@@ -174,7 +176,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: #384870;
+  color: #5878a8;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -201,13 +203,13 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   font-family: 'Syne', sans-serif;
   font-size: 1.1rem;
   font-weight: 800;
-  color: #384870;
+  color: #7090c0;
   margin-bottom: 10px;
   letter-spacing: -0.01em;
 }
 .empty-sub {
   font-size: 0.8rem;
-  color: #2a3860;
+  color: #5070a0;
   max-width: 260px;
   margin: 0 auto;
   line-height: 1.7;
@@ -241,7 +243,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 5px;
-  color: #384870;
+  color: #5878a8;
 }
 
 /* ── Console ── */
@@ -308,7 +310,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   border: 1px solid #1a2240;
 }
 .stTabs [data-baseweb="tab"] {
-  color: #6880a8;
+  color: #7090b8;
   border-radius: 7px;
   font-family: 'Inter', sans-serif;
   font-size: 0.84rem;
@@ -335,7 +337,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   font-family: 'Space Mono', monospace;
   font-size: 0.62rem;
   font-weight: 700;
-  color: #384870;
+  color: #6888b8;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -352,7 +354,7 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 }
 [data-testid="stSidebar"] .stButton>button {
   background: transparent !important;
-  color: #6880a8 !important;
+  color: #8090c0 !important;
   border: none !important;
   border-radius: 0 !important;
   border-left: 2px solid transparent !important;
