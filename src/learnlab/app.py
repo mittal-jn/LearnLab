@@ -13,7 +13,7 @@ from learnlab import styles
 
 st.set_page_config(
     page_title="LearnLab",
-    page_icon="=",
+    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -55,7 +55,7 @@ with st.sidebar:
     st.markdown(
         '<div class="sidebar-header">'
         '<div class="sidebar-title">Quick Topics</div>'
-        '<div class="sidebar-sub">tap to explore</div>'
+        '<div class="sidebar-sub">click to explore</div>'
         '</div>',
         unsafe_allow_html=True,
     )
@@ -117,8 +117,9 @@ def render_quiz(quiz: dict) -> None:
 # ── Logo
 st.markdown(
     '<div class="logo-bar">'
+    '<div class="logo-mark">🧠</div>'
     '<div class="logo-text">LearnLab</div>'
-    '<div class="tagline">// interactive concept explorer - powered by Groq AI</div>'
+    '<div class="tagline">powered by Groq AI</div>'
     '</div>',
     unsafe_allow_html=True,
 )
@@ -129,7 +130,7 @@ with st.form("search_form", border=False):
     with c1:
         topic_input = st.text_input(
             "topic",
-            placeholder="Search any concept e.g. Binary Search, Async/Await, Big O",
+            placeholder="Search any concept — Binary Search, Async/Await, Big O…",
             label_visibility="collapsed",
         )
     with c2:
@@ -155,13 +156,11 @@ data = st.session_state.data
 with left:
     if not data:
         st.markdown(
-            '<div style="text-align:center;padding:60px 20px;color:#6b7094">'
-            '<div style="font-size:3rem;opacity:0.25">brain</div>'
-            '<div style="font-family:Syne,sans-serif;font-size:1.1rem;color:#9da3c8;'
-            'margin:12px 0 8px;font-weight:700">Pick a concept to explore</div>'
-            '<div style="font-size:0.85rem;max-width:280px;margin:0 auto;line-height:1.6">'
-            'Type any CS topic and press Enter or click Explore, '
-            'or pick a topic from the left panel.</div></div>',
+            '<div class="empty-state">'
+            '<div class="empty-icon">🧠</div>'
+            '<div class="empty-title">Pick a concept to explore</div>'
+            '<div class="empty-sub">Search any CS topic above, or select one from the left panel.</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
     else:
@@ -230,11 +229,16 @@ with right:
 
         topic_ctx = st.session_state.topic or "general programming"
         st.markdown(
-            f'<div style="background:#1a1538;border:1px solid #2a2550;border-radius:8px;'
-            f'padding:7px 12px;margin-bottom:0.7rem;font-size:0.75rem;color:#9da3c8;'
-            f'font-family:Space Mono,monospace">'
-            f'Context: <strong style="color:#7b61ff">{topic_ctx}</strong> - {lang} - '
-            f'{len(st.session_state.chat)//2} turns</div>',
+            f'<div style="background:#0d0a1c;border:1px solid #1c1438;border-radius:10px;'
+            f'padding:8px 14px;margin-bottom:0.8rem;font-size:0.72rem;color:#404055;'
+            f'font-family:Space Mono,monospace;display:flex;gap:12px;align-items:center">'
+            f'<span>context</span>'
+            f'<strong style="color:#8b5cf6">{topic_ctx}</strong>'
+            f'<span style="color:#232335">·</span>'
+            f'<span>{lang}</span>'
+            f'<span style="color:#232335">·</span>'
+            f'<span>{len(st.session_state.chat)//2} turns</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
 
