@@ -13,7 +13,7 @@ from learnlab import styles
 
 st.set_page_config(
     page_title="LearnLab",
-    page_icon="🧠",
+    page_icon="💎",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -117,7 +117,7 @@ def render_quiz(quiz: dict) -> None:
 # ── Logo
 st.markdown(
     '<div class="logo-bar">'
-    '<div class="logo-mark">🧠</div>'
+    '<div class="logo-mark">✦</div>'
     '<div class="logo-text">LearnLab</div>'
     '<div class="tagline">powered by Groq AI</div>'
     '</div>',
@@ -157,7 +157,7 @@ with left:
     if not data:
         st.markdown(
             '<div class="empty-state">'
-            '<div class="empty-icon">🧠</div>'
+            '<div class="empty-icon">✦</div>'
             '<div class="empty-title">Pick a concept to explore</div>'
             '<div class="empty-sub">Search any CS topic above, or select one from the left panel.</div>'
             '</div>',
