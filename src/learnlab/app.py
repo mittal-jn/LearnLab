@@ -55,13 +55,13 @@ with st.sidebar:
     st.markdown(
         '<div class="sidebar-header">'
         '<div class="sidebar-title">Quick Topics</div>'
-        '<div class="sidebar-sub">click to explore</div>'
-        '</div>',
+        '</div>'
+        '<div class="sidebar-divider"></div>',
         unsafe_allow_html=True,
     )
     for i, t in enumerate(QUICK_TOPICS):
         active = st.session_state.topic == t
-        label = f"▸ {t}" if active else t
+        label = f"· {t}" if active else t
         if st.button(label, key=f"chip_{i}", use_container_width=True):
             st.session_state.pending = (t, st.session_state.lang)
             st.rerun()

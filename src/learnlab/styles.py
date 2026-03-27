@@ -285,50 +285,57 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 /* ── Sidebar (after general button rules to override) ── */
 [data-testid="stSidebar"] {
-  background: #05050c !important;
-  border-right: 1px solid #0e0e1a !important;
+  background: linear-gradient(180deg, #0c0c1a 0%, #09090f 100%) !important;
+  border-right: 1px solid #1a1a2e !important;
 }
 [data-testid="stSidebar"] > div { padding-top: 1.4rem !important; }
 .sidebar-header {
-  padding: 0 0.5rem 1.1rem;
-  border-bottom: 1px solid #111120;
-  margin-bottom: 1rem;
+  padding: 0 0.75rem 1rem;
+  margin-bottom: 0.6rem;
 }
 .sidebar-title {
   font-family: 'Syne', sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 800;
-  color: #e0e0ee;
-  letter-spacing: 0.01em;
+  color: #7c7ca0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 .sidebar-sub {
   font-family: 'Space Mono', monospace;
-  font-size: 0.58rem;
-  color: #232335;
+  font-size: 0.56rem;
+  color: #2a2a40;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  margin-top: 4px;
+  margin-top: 3px;
+}
+.sidebar-divider {
+  height: 1px;
+  background: linear-gradient(90deg, #1a1a30 0%, transparent 80%);
+  margin: 0.5rem 0.75rem 0.75rem;
 }
 [data-testid="stSidebar"] .stButton>button {
   background: transparent !important;
-  color: #404055 !important;
-  border: 1px solid transparent !important;
-  border-radius: 8px !important;
-  font-size: 0.8rem !important;
+  color: #5c5c80 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  border-left: 2px solid transparent !important;
+  font-size: 0.82rem !important;
   font-weight: 400 !important;
   text-align: left !important;
-  padding: 0.36rem 0.9rem !important;
-  margin-bottom: 1px !important;
+  padding: 0.45rem 0.75rem !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
   box-shadow: none !important;
-  transition: all 0.15s ease !important;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease !important;
   font-family: 'Inter', sans-serif !important;
   letter-spacing: 0 !important;
 }
 [data-testid="stSidebar"] .stButton>button:hover {
-  background: #0e0e1c !important;
-  color: #e0e0ee !important;
-  border-color: #17172a !important;
-  transform: translateX(4px) translateY(0) !important;
+  background: rgba(139,92,246,0.06) !important;
+  color: #c8c8f0 !important;
+  border-left-color: #8b5cf6 !important;
+  transform: none !important;
   box-shadow: none !important;
 }
 </style>
