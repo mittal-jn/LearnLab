@@ -288,52 +288,56 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
   background: linear-gradient(180deg, #0c0c1a 0%, #09090f 100%) !important;
   border-right: 1px solid #1a1a2e !important;
 }
-[data-testid="stSidebar"] > div { padding-top: 1.4rem !important; }
+[data-testid="stSidebar"] > div {
+  padding: 1.2rem 0 2rem !important;
+}
 .sidebar-header {
-  padding: 0 0.75rem 1rem;
-  margin-bottom: 0.6rem;
+  padding: 0 1rem 0.75rem;
+  margin-bottom: 0.25rem;
 }
 .sidebar-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #7c7ca0;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.sidebar-sub {
   font-family: 'Space Mono', monospace;
-  font-size: 0.56rem;
-  color: #2a2a40;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #3a3a58;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  margin-top: 3px;
 }
 .sidebar-divider {
   height: 1px;
-  background: linear-gradient(90deg, #1a1a30 0%, transparent 80%);
-  margin: 0.5rem 0.75rem 0.75rem;
+  background: linear-gradient(90deg, #1c1c30 0%, transparent 85%);
+  margin: 0 0 0.5rem;
+}
+/* Kill Streamlit's default button wrapper spacing */
+[data-testid="stSidebar"] .stButton {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 [data-testid="stSidebar"] .stButton>button {
   background: transparent !important;
-  color: #5c5c80 !important;
+  color: #5a5a82 !important;
   border: none !important;
   border-radius: 0 !important;
   border-left: 2px solid transparent !important;
-  font-size: 0.82rem !important;
+  font-size: 0.83rem !important;
   font-weight: 400 !important;
   text-align: left !important;
-  padding: 0.45rem 0.75rem !important;
-  margin-bottom: 0 !important;
+  justify-content: flex-start !important;
+  padding: 0.5rem 1rem !important;
+  margin: 0 !important;
   width: 100% !important;
   box-shadow: none !important;
-  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease !important;
+  transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease !important;
   font-family: 'Inter', sans-serif !important;
   letter-spacing: 0 !important;
 }
+[data-testid="stSidebar"] .stButton>button p {
+  text-align: left !important;
+  margin: 0 !important;
+}
 [data-testid="stSidebar"] .stButton>button:hover {
-  background: rgba(139,92,246,0.06) !important;
-  color: #c8c8f0 !important;
+  background: rgba(139,92,246,0.07) !important;
+  color: #c0c0e8 !important;
   border-left-color: #8b5cf6 !important;
   transform: none !important;
   box-shadow: none !important;
