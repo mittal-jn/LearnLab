@@ -15,7 +15,7 @@ st.set_page_config(
     page_title="LearnLab",
     page_icon="=",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 styles.inject()
 
@@ -49,6 +49,22 @@ QUICK_TOPICS = [
     "SQL", "NoSQL",
     "Git", "GitHub",
 ]
+
+# ── Sidebar: Quick Topics
+with st.sidebar:
+    st.markdown(
+        '<div class="sidebar-header">'
+        '<div class="sidebar-title">Quick Topics</div>'
+        '<div class="sidebar-sub">tap to explore</div>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+    for i, t in enumerate(QUICK_TOPICS):
+        active = st.session_state.topic == t
+        label = f"▸ {t}" if active else t
+        if st.button(label, key=f"chip_{i}", use_container_width=True):
+            st.session_state.pending = (t, st.session_state.lang)
+            st.rerun()
 
 # Fetch pending topic
 if st.session_state.pending:
@@ -126,16 +142,9 @@ with st.form("search_form", border=False):
         submitted = st.form_submit_button("Explore", use_container_width=True)
 
     if submitted and topic_input.strip():
+        st.session_state.lang = lang
         st.session_state.pending = (topic_input.strip(), lang)
         st.rerun()
-
-# ── Quick chips
-chip_cols = st.columns(len(QUICK_TOPICS))
-for i, t in enumerate(QUICK_TOPICS):
-    with chip_cols[i]:
-        if st.button(t, key=f"chip_{i}"):
-            st.session_state.pending = (t, lang)
-            st.rerun()
 
 st.markdown('<hr style="border:none;border-top:1px solid #252736;margin:0.4rem 0 1rem"/>', unsafe_allow_html=True)
 
@@ -152,7 +161,7 @@ with left:
             'margin:12px 0 8px;font-weight:700">Pick a concept to explore</div>'
             '<div style="font-size:0.85rem;max-width:280px;margin:0 auto;line-height:1.6">'
             'Type any CS topic and press Enter or click Explore, '
-            'or tap a quick chip above.</div></div>',
+            'or pick a topic from the left panel.</div></div>',
             unsafe_allow_html=True,
         )
     else:

@@ -74,6 +74,36 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
   line-height: 1.7; min-height: 80px; max-height: 240px; overflow-y: auto;
   white-space: pre-wrap; word-break: break-word; }
 
+/* Sidebar */
+[data-testid="stSidebar"] {
+  background: #0d0e14 !important;
+  border-right: 1px solid #252736 !important;
+}
+[data-testid="stSidebar"] > div { padding-top: 1rem !important; }
+.sidebar-header { padding: 0 0.2rem 1rem; border-bottom: 1px solid #252736; margin-bottom: 0.8rem; }
+.sidebar-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 800;
+  color: #e8eaf0; letter-spacing: 0.02em; }
+.sidebar-sub { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: #6b7094;
+  text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+[data-testid="stSidebar"] .stButton>button {
+  background: transparent !important;
+  color: #9da3c8 !important;
+  border: 1px solid #1e2030 !important;
+  border-radius: 6px !important;
+  font-size: 0.82rem !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  padding: 0.35rem 0.8rem !important;
+  margin-bottom: 2px !important;
+  transition: all 0.15s ease !important;
+}
+[data-testid="stSidebar"] .stButton>button:hover {
+  background: #1b1d27 !important;
+  color: #e8eaf0 !important;
+  border-color: #7b61ff !important;
+  transform: translateX(3px) !important;
+}
+
 /* Widget overrides */
 .stTextInput>div>div>input, .stTextArea>div>div>textarea {
   background: #13141a !important; border: 1px solid #252736 !important;
